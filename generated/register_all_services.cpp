@@ -26,6 +26,9 @@
 #include "nirfmxcdma2k/nirfmxcdma2k_service_registrar.h"
 #endif // defined(_MSC_VER)
 #if defined(_MSC_VER)
+#include "nirfmxdemod/nirfmxdemod_service_registrar.h"
+#endif // defined(_MSC_VER)
+#if defined(_MSC_VER)
 #include "nirfmxgsm/nirfmxgsm_service_registrar.h"
 #endif // defined(_MSC_VER)
 #if defined(_MSC_VER)
@@ -138,6 +141,15 @@ std::shared_ptr<std::vector<std::shared_ptr<void>>> register_all_services(
     nirfmxcdma2k_grpc::register_service(
       server_builder, 
       ni_r_fmx_instr_handle_repository,
+      vi_session_repository,
+      feature_toggles));
+#endif // defined(_MSC_VER)
+#if defined(_MSC_VER)
+  service_vector->push_back(
+    nirfmxdemod_grpc::register_service(
+      server_builder, 
+      ni_r_fmx_instr_handle_repository,
+      vi_session_repository,
       feature_toggles));
 #endif // defined(_MSC_VER)
 #if defined(_MSC_VER)
@@ -199,6 +211,7 @@ std::shared_ptr<std::vector<std::shared_ptr<void>>> register_all_services(
     nirfmxtdscdma_grpc::register_service(
       server_builder, 
       ni_r_fmx_instr_handle_repository,
+      vi_session_repository,
       feature_toggles));
 #endif // defined(_MSC_VER)
 #if defined(_MSC_VER)
