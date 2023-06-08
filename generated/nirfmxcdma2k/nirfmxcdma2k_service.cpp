@@ -25,7 +25,7 @@ namespace nirfmxcdma2k_grpc {
   const auto kWarningCAPIStringTruncatedToFitBuffer = 200026;
 
   NiRFmxCDMA2kService::NiRFmxCDMA2kService(
-      NiRFmxCDMA2kLibraryInterface* library,
+      LibrarySharedPtr library,
       ResourceRepositorySharedPtr resource_repository,
       ViSessionResourceRepositorySharedPtr vi_session_resource_repository,
       const NiRFmxCDMA2kFeatureToggles& feature_toggles)
@@ -6094,7 +6094,7 @@ namespace nirfmxcdma2k_grpc {
   NiRFmxCDMA2kFeatureToggles::NiRFmxCDMA2kFeatureToggles(
     const nidevice_grpc::FeatureToggles& feature_toggles)
     : is_enabled(
-        feature_toggles.is_feature_enabled("nirfmxcdma2k", CodeReadiness::kNextRelease))
+        feature_toggles.is_feature_enabled("nirfmxcdma2k", CodeReadiness::kRelease))
   {
   }
 } // namespace nirfmxcdma2k_grpc

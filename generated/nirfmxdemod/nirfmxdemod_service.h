@@ -33,16 +33,17 @@ struct NiRFmxDemodFeatureToggles
 
 class NiRFmxDemodService final : public NiRFmxDemod::Service {
 public:
+  using LibrarySharedPtr = std::shared_ptr<NiRFmxDemodLibraryInterface>;
   using ResourceRepositorySharedPtr = std::shared_ptr<nidevice_grpc::SessionResourceRepository<niRFmxInstrHandle>>;
   using ViSessionResourceRepositorySharedPtr = std::shared_ptr<nidevice_grpc::SessionResourceRepository<ViSession>>;
 
   NiRFmxDemodService(
-    NiRFmxDemodLibraryInterface* library,
+    LibrarySharedPtr library,
     ResourceRepositorySharedPtr resource_repository,
     ViSessionResourceRepositorySharedPtr vi_session_resource_repository,
     const NiRFmxDemodFeatureToggles& feature_toggles = {});
   virtual ~NiRFmxDemodService();
-  
+
   ::grpc::Status ADemodCfgAMCarrierSuppressed(::grpc::ServerContext* context, const ADemodCfgAMCarrierSuppressedRequest* request, ADemodCfgAMCarrierSuppressedResponse* response) override;
   ::grpc::Status ADemodCfgAudioFilter(::grpc::ServerContext* context, const ADemodCfgAudioFilterRequest* request, ADemodCfgAudioFilterResponse* response) override;
   ::grpc::Status ADemodCfgAveraging(::grpc::ServerContext* context, const ADemodCfgAveragingRequest* request, ADemodCfgAveragingResponse* response) override;
@@ -187,10 +188,10 @@ public:
   ::grpc::Status WaitForAcquisitionComplete(::grpc::ServerContext* context, const WaitForAcquisitionCompleteRequest* request, WaitForAcquisitionCompleteResponse* response) override;
   ::grpc::Status WaitForMeasurementComplete(::grpc::ServerContext* context, const WaitForMeasurementCompleteRequest* request, WaitForMeasurementCompleteResponse* response) override;
 private:
-  NiRFmxDemodLibraryInterface* library_;
+  LibrarySharedPtr library_;
   ResourceRepositorySharedPtr session_repository_;
   ViSessionResourceRepositorySharedPtr vi_session_resource_repository_;
-  ::grpc::Status ConvertApiErrorStatusForNiRFmxInstrHandle(::grpc::ServerContext* context, int32_t status, niRFmxInstrHandle instrumentHandle);
+  ::grpc::Status ConvertApiErrorStatusForNiRFmxInstrHandle(::grpc::ServerContextBase* context, int32_t status, niRFmxInstrHandle instrumentHandle);
   std::map<std::int32_t, std::string> digitaledgetriggersource_input_map_ { {1, "PFI0"},{2, "PFI1"},{3, "PXI_STAR"},{4, "PXI_Trig0"},{5, "PXI_Trig1"},{6, "PXI_Trig2"},{7, "PXI_Trig3"},{8, "PXI_Trig4"},{9, "PXI_Trig5"},{10, "PXI_Trig6"},{11, "PXI_Trig7"},{12, "PXIe_DStarB"},{13, "TimerEvent"}, };
   std::map<std::string, std::int32_t> digitaledgetriggersource_output_map_ { {"PFI0", 1},{"PFI1", 2},{"PXI_STAR", 3},{"PXI_Trig0", 4},{"PXI_Trig1", 5},{"PXI_Trig2", 6},{"PXI_Trig3", 7},{"PXI_Trig4", 8},{"PXI_Trig5", 9},{"PXI_Trig6", 10},{"PXI_Trig7", 11},{"PXIe_DStarB", 12},{"TimerEvent", 13}, };
   std::map<std::int32_t, std::string> frequencyreferencesource_input_map_ { {1, "OnboardClock"},{2, "RefIn"},{3, "PXI_Clk"},{4, "ClkIn"}, };
